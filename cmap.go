@@ -5,7 +5,7 @@ import "fmt"
 //ChannelMap hola
 type ChannelMap struct {
 	intChan chan int
-	wordMap map[string]int
+	wordCounts map[string]int
 }
 
 // Listen hola
