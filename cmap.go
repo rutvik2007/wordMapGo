@@ -1,32 +1,21 @@
-
 package main
-import "fmt"
 
+import "fmt"
 
 //type struct {
 //
 //}
 
-
 func NewChannelMap() {
 
-
-	return chanMap;
+	return
 }
-
-
 
 func NewLockingMap() {
 
-
-	return nil;
+	return NewChannelMap()
 }
-
-
-
 
 func main() {
 	fmt.Printf("hello world\n")
 }
-
-
