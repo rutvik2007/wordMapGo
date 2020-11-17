@@ -1,4 +1,4 @@
-# CS476 Assignment 2
+## CS476 Assignment 2
 
 Alejandro Servetto	aservet1@binghamton.edu
 
