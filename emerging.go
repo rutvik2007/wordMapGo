@@ -40,7 +40,7 @@ type EmergingMap interface {
 	Listen()
 	Stop()
 
-        Reduce(functor ReduceFunc, accum_str string, accum_int int) (string, int)
+	Reduce(functor ReduceFunc, accum_str string, accum_int int) (string, int)
 	AddWord(word string)
 	GetCount(word string) int
 }
@@ -89,10 +89,9 @@ func main() {
 		}()
 	}
 
-        fmt.Println("Starting Reducer")
-        reduce_kill := make(chan int)
-        go reducer(max_word, emap, "INVALID", 0, reduce_kill)
-
+	fmt.Println("Starting Reducer")
+	reduce_kill := make(chan int)
+	go reducer(max_word, emap, "INVALID", 0, reduce_kill)
 
 	fmt.Println("\nRunning\n")
 	wg.Wait()
@@ -101,7 +100,7 @@ func main() {
 	for i := 0; i < *arg_askers; i++ {
 		ask_kill <- 1
 	}
-        reduce_kill <- 1
+	reduce_kill <- 1
 
 	emap.Stop()
 	fmt.Println("Map Stopped\n")
@@ -152,9 +151,6 @@ func reducer(functor ReduceFunc, emap EmergingMap, accum_str string, accum_int i
         }
     }
 }
-
-
-
 
 func asker(word_list []string, emap EmergingMap, kill chan int) {
 	L := len(word_list)
