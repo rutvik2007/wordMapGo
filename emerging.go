@@ -13,16 +13,16 @@ import (
 	"time"
 )
 
-type ReduceFunc func(key1 string, val1 int, key2 string, val2 int) (string,int)
+type ReduceFunc func(key1 string, val1 int, key2 string, val2 int) (string, int)
 
 var (
 	arg_chan = flag.Bool("chan", false, "use the channel map")
 	arg_lock = flag.Bool("lock", false, "use the locking map")
 
-	arg_askers   = flag.Int("askers", 1, "number of asker goroutines")
-	arg_askdelay = flag.Int("askdelay", 1000, "the delay in milliseconds for askers")
+	arg_askers      = flag.Int("askers", 1, "number of asker goroutines")
+	arg_askdelay    = flag.Int("askdelay", 1000, "the delay in milliseconds for askers")
 	arg_reducedelay = flag.Int("reducedelay", 1000, "the delay in milliseconds for reducers")
-	arg_askfile  = flag.String("askfile", "data/ask.txt", "the file the askers should query from")
+	arg_askfile     = flag.String("askfile", "data/ask.txt", "the file the askers should query from")
 
 	arg_readers = flag.Int("readers", 4, "number of reader goroutines")
 	arg_infiles = flag.String("infiles", "", "comma separated list of files to fill map with")
@@ -134,22 +134,29 @@ func reader(filename string, emap EmergingMap) {
 }
 
 func max_word(w1 string, c1 int, w2 string, c2 int) (string, int) {
-    if c1 > c2 {
-        return w1, c1
-    }
-    return w2, c2
+	if c1 > c2 {
+		return w1, c1
+	}
+	return w2, c2
+}
+
+func min_word(w1 string, c1 int, w2 string, c2 int) (string, int) {
+	if c1 < c2 {
+		return w1, c1
+	}
+	return w2, c2
 }
 
 func reducer(functor ReduceFunc, emap EmergingMap, accum_str string, accum_int int, kill chan int) {
-    for {
-        select {
-        case <-time.Tick(time.Millisecond * time.Duration(*arg_reducedelay)):
-            word, count := emap.Reduce(functor, accum_str, accum_int)
-            fmt.Println("Reduction result:", word, count);
-        case <-kill:
-            return
-        }
-    }
+	for {
+		select {
+		case <-time.Tick(time.Millisecond * time.Duration(*arg_reducedelay)):
+			word, count := emap.Reduce(functor, accum_str, accum_int)
+			fmt.Println("Reduction result:", word, count)
+		case <-kill:
+			return
+		}
+	}
 }
 
 func asker(word_list []string, emap EmergingMap, kill chan int) {
