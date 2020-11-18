@@ -4,8 +4,15 @@ import "fmt"
 
 //ChannelMap hola
 type ChannelMap struct {
-	intChan chan int
-	wordCounts map[string]int
+	wordCounts   map[string]int
+	askCountChan chan string
+	getCountChan chan int
+	addWordChan  chan string
+	reduceMapChan 
+}
+
+type reduceStruct struct{
+
 }
 
 // Listen hola
@@ -37,14 +44,17 @@ func (cm ChannelMap) GetCount(word string) int {
 }
 
 //NewChannelMap returns a new channelMap
-func NewChannelMap() EmergingMap {
-	var tmpChanMap ChannelMap
-	tmpChanMap.intChan = make(chan int)
-	return tmpChanMap
+func NewChannelMap() *EmergingMap {
+	var newChanMap ChannelMap
+	newChanMap.wordCounts = make(map[string]int)
+	newChanMap.askCountChan = make(chan string)
+	newChanMap.getCountChan = make(chan int)
+	newChanMap.reduceMapChan = make(chan )
+	return &newChanMap
 }
 
 //NewLockingMap returns a new ChannelMap
-func NewLockingMap() EmergingMap {
+func NewLockingMap() *EmergingMap {
 
 	return NewChannelMap()
 }

@@ -1,5 +1,4 @@
-
-package main
+package main1s
 
 import (
 	"fmt"
@@ -12,7 +11,7 @@ func AddWord(word string, wc map[string]int) map[string]int {
 	} else {
 		wc[word] = 1
 	}
-	return wc;
+	return wc
 }
 
 func main() {
@@ -20,11 +19,11 @@ func main() {
 	const str string = "uhhhhhhhhhhhhhh life is better with clean hands hands"
 	words := strings.Fields(str)
 
-	wordcounts := make( map[string]int )
+	wordcounts := make(map[string]int)
 
 	for i := 0; i < len(words); i++ {
 
-		wordcounts = AddWord(words[i],wordcounts)
+		wordcounts = AddWord(words[i], wordcounts)
 
 	}
 
