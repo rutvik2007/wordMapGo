@@ -7,17 +7,40 @@ type ChannelMap struct {
 	wordCounts   map[string]int
 	askCountChan chan string
 	getCountChan chan int
+
 	addWordChan  chan string
-	reduceMapChan 
+
+	askReduceMapChan chan ReduceInfoStruct
+	getReduceManChan chan ReduceInfoStruct
+
+	killChannel chan int
 }
 
-type reduceStruct struct{
-
+type ReduceInfoStruct struct{
+	functor ReduceFunc
+	word string
+	count int
 }
 
 // Listen hola
 func (cm ChannelMap) Listen() {
-	return
+
+	for {
+		select {
+			case <-askCountChan:	///rutvik
+				//...
+
+			case word<-addWordChan:		/// alejandro //prolly bad syntax for assigning to word variable
+				//...
+
+			case redstruct<-askReduceMapChan:	///rutvik  //change variable name 'redstruct'
+				//...
+
+			case <-killChan:		///alejandro
+				//...
+		}
+	}
+
 }
 
 //Stop hola
