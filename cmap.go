@@ -44,14 +44,14 @@ func (cm ChannelMap) Listen() {
 				cm.wordCounts[word] = 1
 			}
 
-		case redStruct = <-cm.askReduceMapChan: ///rutvik  //change variable
+		case redStruct = <-cm.askReduceMapChan: ///rutvik
 			for word, count := range cm.wordCounts {
 				redStruct.word, redStruct.count = redStruct.functor(redStruct.word, redStruct.count, word, count)
 			}
 			cm.getReduceMapChan <- redStruct
 		case <-cm.killStream: ///alejandro
-			fmt.Printf("in the killChan case\n")
-			return //...
+			fmt.Printf("in the killStream case\n")
+			break
 		}
 	}
 
