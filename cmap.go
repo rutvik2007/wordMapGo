@@ -99,3 +99,10 @@ func NewChannelMap() *ChannelMap {
 func NewLockingMap() *ChannelMap {
 	return NewChannelMap()
 }
+
+func min_word(w1 string, c1 int, w2 string, c2 int) (string, int) {
+	if c1 < c2 {
+		return w1, c1
+	}
+	return w2, c2
+}
