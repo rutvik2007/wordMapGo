@@ -22,7 +22,7 @@ See Bash Script: ./runall.sh
 
 2) Discuss your results
 
-		It looks like a lot of readers and askers lead to horirbly long run times, as the 61 minutes listed above is
+	It looks like a lot of readers and askers lead to horirbly long run times, as the 61 minutes listed above is
 	the time that we interrupted the program to force it to finish. It was taking too long. Here there were more readers
 	and askers that were necessary to read the amount of files available. So we had too many extra go routines running and
 	the channels were constantly full and blocked, waiting to be used. The overhead of having so many readers and askers
