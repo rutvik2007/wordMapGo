@@ -1,4 +1,10 @@
- --> STARTING TRIAL WITH 1 READERS, 1 ASKERS
+Everything below (not including) the dotted line is machine output from running the ./runall.sh script
+'./runall.sh 2> timings'
+This text is just me explaining what this data is, it is not machine generated.
+The trial with 64 readers and 64 askers was cut short because it took far too long to run, over an hour.
+This is not the data that was used from the readme. This data is what was connected on Rutvik's computer. The data for the readme is Alejandro's computer data
+........................................................
+--> STARTING TRIAL WITH 1 READERS, 1 ASKERS
 
 real	0m20.888s
 user	0m4.225s
