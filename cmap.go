@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-//ChannelMap hola
+//ChannelMap to provide concurrent access to the wordCount map using channels
 type ChannelMap struct {
 	wordCounts map[string]int
 
@@ -24,7 +24,7 @@ type ReduceInfoStruct struct {
 	count   int
 }
 
-// Listen hola
+// Listen to requests
 func (cm ChannelMap) Listen() {
 	var (
 		word      string
@@ -57,13 +57,13 @@ func (cm ChannelMap) Listen() {
 
 }
 
-//Stop hola
+//Stop listening to requests
 func (cm ChannelMap) Stop() {
 	cm.killStream <- 69420
 	return
 }
 
-// Reduce hola
+// Reduce the wordCount map
 func (cm ChannelMap) Reduce(functor ReduceFunc, accumStr string, accumInt int) (string, int) {
 	var redstruct ReduceInfoStruct
 	redstruct.functor = functor
@@ -74,13 +74,13 @@ func (cm ChannelMap) Reduce(functor ReduceFunc, accumStr string, accumInt int) (
 	return redstruct.word, redstruct.count
 }
 
-// AddWord hola
+// AddWord to the wordCount map
 func (cm ChannelMap) AddWord(word string) {
 	cm.addWordChan <- word
 	return
 }
 
-// GetCount hola
+// GetCount for word from wordCount map
 func (cm ChannelMap) GetCount(word string) int {
 	cm.askCountChan <- word
 	return <-cm.getCountChan
