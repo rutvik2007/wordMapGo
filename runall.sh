@@ -1,15 +1,27 @@
 #!/bin/bash 
 
-files=$(ls data | grep pg ) #| sed s/[^0-9]//g )
+files=$(ls data | grep pg ) 
 
-files_csv=''
 for file in $files
 do
-	#echo $file
-	files_csv="$files_csv,./data/$file"
+	if [ "$files_csv" == '' ]
+	then
+		files_csv="./data/$file"
+	else
+		files_csv="$files_csv,./data/$file"
+	fi
 done
 
-files_csv=$(echo $files_csv | sed 's/,//') #remove beginning comma
 #echo $files_csv; exit
 
-go run emerging.go cmap.go -chan -infiles="$files_csv" -readers=10 -askers=2 -askdelay=10 
+readerVals=(1 16 4 16 64)
+askerVals=( 1  2 8 32 64)
+
+for index in ${!readerVals[*]}
+do
+	>&2 echo " --> STARTING TRIAL WITH ${readerVals[$index]} READERS, ${askerVals[$index]} ASKERS"
+	time go run emerging.go cmap.go -chan -infiles="$files_csv" \
+		-readers=${readerVals[$index]} \
+		-askers=${askerVals[$index]} \
+		-askdelay=10
+done
