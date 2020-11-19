@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 //ChannelMap to provide concurrent access to the wordCount map using channels
 type ChannelMap struct {
 	wordCounts map[string]int
@@ -36,8 +34,7 @@ func (cm ChannelMap) Listen() {
 		case word = <-cm.askCountChan: ///rutvik
 			cm.getCountChan <- cm.wordCounts[word]
 
-		case word = <-cm.addWordChan: /// alejandro
-			fmt.Printf("in addWordChan, word = %s\n", word)
+		case word = <-cm.addWordChan: /// alejandro=
 			if _, ok := cm.wordCounts[word]; ok {
 				cm.wordCounts[word]++
 			} else {
@@ -50,7 +47,6 @@ func (cm ChannelMap) Listen() {
 			}
 			cm.getReduceMapChan <- redStruct
 		case <-cm.killStream: ///alejandro
-			fmt.Printf("in the killStream case\n")
 			break
 		}
 	}

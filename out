@@ -1,0 +1,16 @@
+Concurrent Maps
+--------------------
+
+Creating Map
+Reading query file
+Starting Askers
+Starting Readers
+Starting Reducer
+
+Running
+
+Reading 2920 lines of ./data/pg1041.txt
+1000 queries made
+Reduction result: the 30
+1000 words added
+2000 queries made
