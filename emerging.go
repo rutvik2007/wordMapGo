@@ -22,7 +22,7 @@ var (
 	arg_askers      = flag.Int("askers", 1, "number of asker goroutines")
 	arg_askdelay    = flag.Int("askdelay", 1000, "the delay in milliseconds for askers")
 	arg_reducedelay = flag.Int("reducedelay", 1000, "the delay in milliseconds for reducers")
-	arg_askfile     = flag.String("askfile", "data/ask.txt", "the file the askers should query from")
+	arg_askfile     = flag.String("askfile", "./data/ask.txt", "the file the askers should query from")
 
 	arg_readers = flag.Int("readers", 4, "number of reader goroutines")
 	arg_infiles = flag.String("infiles", "", "comma separated list of files to fill map with")
