@@ -19,9 +19,13 @@ askerVals=( 1  2 8 32 64)
 
 for index in ${!readerVals[*]}
 do
-	>&2 echo " --> STARTING TRIAL WITH ${readerVals[$index]} READERS, ${askerVals[$index]} ASKERS"
+	rs=${readerVals[$index]}
+	as=${askerVals[$index]}
+	>&2 echo " --> STARTING TRIAL WITH $rs READERS, $as ASKERS"
 	time go run emerging.go cmap.go -chan -infiles="$files_csv" \
 		-readers=${readerVals[$index]} \
 		-askers=${askerVals[$index]} \
-		-askdelay=10
+		-askdelay=10\
+		> /dev/null
+	echo " <-- done with iteration $(( $index + 1 )) out of 5. readers=$rs ; askers=$as"
 done
