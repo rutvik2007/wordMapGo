@@ -5,13 +5,14 @@ import "fmt"
 //ChannelMap hola
 type ChannelMap struct {
 	wordCounts   map[string]int
+
 	askCountChan chan string
 	getCountChan chan int
 
 	addWordChan  chan string
 
 	askReduceMapChan chan ReduceInfoStruct
-	getReduceManChan chan ReduceInfoStruct
+	getReduceMapChan chan ReduceInfoStruct
 
 	killChannel chan int
 }
@@ -25,19 +26,32 @@ type ReduceInfoStruct struct{
 // Listen hola
 func (cm ChannelMap) Listen() {
 
+	var (
+		word string
+		redInfo ReduceInfoStruct
+	)
+
 	for {
 		select {
 			case <-askCountChan:	///rutvik
-				//...
+				fmt.Printf("in askCountChan")
+				temp_return_val := 679
+				getCountChan<-temp_return_val
 
-			case word<-addWordChan:		/// alejandro //prolly bad syntax for assigning to word variable
-				//...
+			case word<-addWordChan:		/// alejandro
+				fmt.Printf("in addWordChan, word = %s\n",word)
+				if _, ok := cm.wordCounts[word]; ok {
+					cm.wordCounts[word]++
+				} else {
+					cm.wordCounts[word] = 1
+				}
 
-			case redstruct<-askReduceMapChan:	///rutvik  //change variable name 'redstruct'
+			case redInfo<-askReduceMapChan:	///rutvik  //change variable name 'redstruct'
 				//...
 
 			case <-killChan:		///alejandro
-				//...
+				fmt.Printf("in the killChan case\n")
+				return//...
 		}
 	}
 
@@ -57,7 +71,7 @@ func (cm ChannelMap) Reduce(functor ReduceFunc, accumStr string, accumInt int) (
 // AddWord hola
 func (cm ChannelMap) AddWord(word string) {
 
-	return
+	addWordChan<-word
 
 }
 
@@ -70,11 +84,26 @@ func (cm ChannelMap) GetCount(word string) int {
 func NewChannelMap() *EmergingMap {
 	var newChanMap ChannelMap
 	newChanMap.wordCounts = make(map[string]int)
-	newChanMap.askCountChan = make(chan string)
-	newChanMap.getCountChan = make(chan int)
-	newChanMap.reduceMapChan = make(chan )
+	newchanmap.askCountChan = make(chan string)
+	newchanmap.getCountChan = make(chan int)
+	newChanMap.addWordChan = make(chan string)
+	newChanMap.askReduceMapChan = make(chan ReduceInfoStruct)
+	newChanMap.getReduceMapChan = make(chan ReduceInfoStruct)
 	return &newChanMap
 }
+////type ChannelMap struct {
+////	wordCounts   map[string]int
+////
+////	askCountChan chan string
+////	getCountChan chan int
+////
+////	addWordChan  chan string
+////
+////	askReduceMapChan chan ReduceInfoStruct
+////	getReduceManChan chan ReduceInfoStruct
+////
+////	killChannel chan int
+////}
 
 //NewLockingMap returns a new ChannelMap
 func NewLockingMap() *EmergingMap {
@@ -82,6 +111,12 @@ func NewLockingMap() *EmergingMap {
 	return NewChannelMap()
 }
 
-func main() {
-	fmt.Printf("hello world\n")
-}
+///func main() {
+///	fmt.Printf("hello world\n")
+///}
+
+
+
+
+
+
