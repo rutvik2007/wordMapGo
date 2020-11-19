@@ -4,7 +4,8 @@ import "fmt"
 
 //ChannelMap hola
 type ChannelMap struct {
-	wordCounts   map[string]int
+	wordCounts map[string]int
+
 	askCountChan chan string
 	getCountChan chan int
 
@@ -13,7 +14,7 @@ type ChannelMap struct {
 	askReduceMapChan chan ReduceInfoStruct
 	getReduceMapChan chan ReduceInfoStruct
 
-	killChannel chan int
+	killStream chan int
 }
 
 //ReduceInfoStruct packages information to reduce count map into a struct
@@ -25,23 +26,32 @@ type ReduceInfoStruct struct {
 
 // Listen hola
 func (cm ChannelMap) Listen() {
-	var redstruct ReduceInfoStruct
-	var word string
+	var (
+		word      string
+		redStruct ReduceInfoStruct
+	)
+
 	for {
 		select {
 		case word = <-cm.askCountChan: ///rutvik
 			cm.getCountChan <- cm.wordCounts[word]
-		case word = <-cm.addWordChan: /// alejandro //prolly bad syntax for assigning to word variable
-			//...
 
-		case redstruct = <-cm.askReduceMapChan: ///rutvik  //change variable
-			for word, count := range cm.wordCounts {
-				redstruct.word, redstruct.count = redstruct.functor(redstruct.word, redstruct.count, word, count)
+		case word = <-cm.addWordChan: /// alejandro
+			fmt.Printf("in addWordChan, word = %s\n", word)
+			if _, ok := cm.wordCounts[word]; ok {
+				cm.wordCounts[word]++
+			} else {
+				cm.wordCounts[word] = 1
 			}
-			cm.getReduceMapChan <- redstruct
 
-		case <-cm.killChannel: ///alejandro
-			//...
+		case redStruct = <-cm.askReduceMapChan: ///rutvik  //change variable
+			for word, count := range cm.wordCounts {
+				redStruct.word, redStruct.count = redStruct.functor(redStruct.word, redStruct.count, word, count)
+			}
+			cm.getReduceMapChan <- redStruct
+		case <-cm.killStream: ///alejandro
+			fmt.Printf("in the killChan case\n")
+			return //...
 		}
 	}
 
@@ -49,6 +59,7 @@ func (cm ChannelMap) Listen() {
 
 //Stop hola
 func (cm ChannelMap) Stop() {
+	cm.killStream <- 69420
 	return
 }
 
@@ -65,9 +76,8 @@ func (cm ChannelMap) Reduce(functor ReduceFunc, accumStr string, accumInt int) (
 
 // AddWord hola
 func (cm ChannelMap) AddWord(word string) {
-
+	cm.addWordChan <- word
 	return
-
 }
 
 // GetCount hola
@@ -85,16 +95,11 @@ func NewChannelMap() *ChannelMap {
 	newChanMap.addWordChan = make(chan string, ADD_BUFFER_SIZE)
 	newChanMap.askReduceMapChan = make(chan ReduceInfoStruct, ASK_BUFFER_SIZE)
 	newChanMap.getReduceMapChan = make(chan ReduceInfoStruct, ASK_BUFFER_SIZE)
-	newChanMap.killChannel = make(chan int)
+	newChanMap.killStream = make(chan int)
 	return &newChanMap
 }
 
 //NewLockingMap returns a new ChannelMap
 func NewLockingMap() *ChannelMap {
-
 	return NewChannelMap()
-}
-
-func main() {
-	fmt.Printf("hello world\n")
 }
