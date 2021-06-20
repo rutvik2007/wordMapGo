@@ -4,7 +4,7 @@ Alejandro Servetto	aservet1@binghamton.edu
 
 Rutvik Saptarshi	rsaptar2@binghamton.edu
 
-Data collected by running the program with the different configurations on all the pg\*.txt files. USed a bash 
+Data collected by running the program with the different configurations on all the pg\*.txt files. Used a bash 
 script to facilitate all that. Inlcuded in the tar.gz file runall.sh. Redirect stderr to your desired output file and you
 will get a dump of the timing results (in different format than the table below. I reformatted that for this writeup)
 
